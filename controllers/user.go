@@ -56,6 +56,11 @@ func (ctrl UserController) AddUser(c *gin.Context) {
 	data, err := bcrypt.GenerateFromPassword([]byte(newUser.Password), bcrypt.DefaultCost)
 	if err != nil {
 		log.Fatal(err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error while hashing password",
+		})
+		return
+
 	}
 	newUser.Password = string(data)
 	_, err = db.DB.Exec(query, newUser.Name, newUser.Email, newUser.Password, newUser.Country, newUser.Verified, newUser.Role, newUser.ProfileImage)
