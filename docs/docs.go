@@ -18,6 +18,29 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/categories": {
+            "get": {
+                "description": "get all categories",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "categories"
+                ],
+                "summary": "get all categories",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Categories"
+                        }
+                    }
+                }
+            }
+        },
         "/recipes": {
             "get": {
                 "description": "get all recipes",
@@ -130,6 +153,20 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "models.Categories": {
+            "type": "object",
+            "properties": {
+                "coverimage": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Recipe": {
             "type": "object",
             "properties": {

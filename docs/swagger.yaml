@@ -1,5 +1,14 @@
 basePath: /
 definitions:
+  models.Categories:
+    properties:
+      coverimage:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
   models.Recipe:
     properties:
       country:
@@ -41,6 +50,21 @@ info:
   title: Recipe API
   version: "1.0"
 paths:
+  /categories:
+    get:
+      consumes:
+      - application/json
+      description: get all categories
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Categories'
+      summary: get all categories
+      tags:
+      - categories
   /recipes:
     get:
       consumes:
