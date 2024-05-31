@@ -32,6 +32,7 @@ func (ctrl UserController) GetUsers(c *gin.Context) {
 		})
 		return
 	}
+	defer rows.Close()
 	fmt.Println("the rows are", rows)
 	var users []models.User
 	for rows.Next() {

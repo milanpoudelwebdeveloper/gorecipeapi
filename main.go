@@ -29,6 +29,7 @@ func main() {
 
 	routes.UserRoutes(r)
 	routes.RecipeRoutes(r)
+	routes.CategoryRoutes(r)
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.Run()
 }

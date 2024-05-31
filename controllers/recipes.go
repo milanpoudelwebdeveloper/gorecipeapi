@@ -29,6 +29,7 @@ func (ctrl RecipeController) GetRecipes(c *gin.Context) {
 		})
 		return
 	}
+	defer rows.Close()
 	var recipes []models.Recipe
 	for rows.Next() {
 		var recipe models.Recipe

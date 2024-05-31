@@ -1,0 +1,67 @@
+package controllers
+
+import (
+	"log"
+	"net/http"
+	"recipeapi/db"
+	"recipeapi/models"
+
+	"github.com/gin-gonic/gin"
+)
+
+type CategoriesController struct{}
+
+func (ctrl *CategoriesController) GetCategories(c *gin.Context) {
+	query := "SELECT * FROM category"
+	rows, err := db.DB.Query(query)
+	if err != nil {
+		log.Fatal(err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error while fetching categories",
+		})
+		return
+	}
+	defer rows.Close()
+	var categories []models.Categories
+	for rows.Next() {
+		var category models.Categories
+		err := rows.Scan(&category.ID, &category.Name, &category.CoverImage)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "Error while fetching categories",
+			})
+			return
+		}
+		categories = append(categories, category)
+
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"message": "All categories",
+		"data":    categories,
+	})
+}
+
+func (ctrl *CategoriesController) AddCategory(c *gin.Context) {
+	query := "INSERT INTO category (name, coverimage) VALUES ($1, $2)"
+	var newCategory models.Categories
+	err := c.BindJSON(&newCategory)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Error parsing body",
+		})
+		return
+	}
+	_, err = db.DB.Exec(query, newCategory.Name, newCategory.CoverImage)
+	if err != nil {
+		log.Fatal(err)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Something went wrong while adding a category",
+		})
+		return
+	}
+	c.JSON(http.StatusCreated, gin.H{
+		"message": "Category created successfully",
+		"data":    newCategory,
+	})
+
+}
