@@ -2,9 +2,8 @@ package main
 
 import (
 	"recipeapi/db"
-	"recipeapi/routes"
-
 	_ "recipeapi/docs"
+	"recipeapi/routes"
 
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
@@ -14,6 +13,8 @@ import (
 // @title Recipe API
 // @version 1.0
 // @description This is a sample server for a recipe API.
+// @contact.name Milan Poudel
+// @contact.url https://github.com/milanpoudelwebdeveloper
 // @host localhost:8080
 // @BasePath /
 
@@ -25,6 +26,7 @@ func main() {
 			"message": "pong",
 		})
 	})
+
 	routes.UserRoutes(r)
 	routes.RecipeRoutes(r)
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

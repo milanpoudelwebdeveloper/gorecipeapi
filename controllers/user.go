@@ -13,6 +13,15 @@ import (
 
 type UserController struct{}
 
+// GetUsers godoc
+// @Summary get all users
+// @Schemes
+// @Description get all users
+// @Tags users
+// @Accept json
+// @Produce json
+// @Success 200 {object} models.User
+// @Router /users [get]
 func (ctrl UserController) GetUsers(c *gin.Context) {
 	query := "SELECT * FROM users ORDER BY id"
 	rows, err := db.DB.Query(query)
@@ -44,6 +53,16 @@ func (ctrl UserController) GetUsers(c *gin.Context) {
 	})
 }
 
+// AddUser godoc
+// @Summary Post a user
+// @Schemes
+// @Description Post a user
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param user body models.User true "User object that needs to be added"
+// @Success 201 {string} string "User added successfully"
+// @Router /users [post]
 func (ctrl UserController) AddUser(c *gin.Context) {
 	query := "INSERT INTO users (name, email, password, country, verified, role, profileimage) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *"
 	var newUser models.User

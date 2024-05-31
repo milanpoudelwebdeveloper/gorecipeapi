@@ -11,14 +11,15 @@ import (
 
 type RecipeController struct{}
 
-// @Summary Get all recipes
-// @Description Get a list of all recipes
+// GetRecipes godoc
+// @Summary get all recipes
+// @Schemes
+// @Description get all recipes
 // @Tags recipes
+// @Accept json
 // @Produce json
-// @Success 200 {array} models.Recipe
-// @Failure 500 {object} gin.H{"message": string}
+// @Success 200 {object} models.Recipe
 // @Router /recipes [get]
-
 func (ctrl RecipeController) GetRecipes(c *gin.Context) {
 	query := `SELECT * FROM recipe`
 	rows, error := db.DB.Query(query)
@@ -47,6 +48,16 @@ func (ctrl RecipeController) GetRecipes(c *gin.Context) {
 	})
 }
 
+// AddRecipes godoc
+// @Summary Post a recipe
+// @Schemes
+// @Description Post a recipe
+// @Tags recipes
+// @Accept json
+// @Produce json
+// @Param recipe body models.Recipe true "Recipe object that needs to be added"
+// @Success 201 {string} string "Recipe added successfully"
+// @Router /recipes [post]
 func (ctrl RecipeController) AddRecipes(c *gin.Context) {
 	var newRecipe models.Recipe
 	query := `INSERT INTO recipe(title, description, country, instructions) VALUES ($1, $2, $3, $4)`
