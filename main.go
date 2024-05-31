@@ -26,7 +26,7 @@ func main() {
 			"message": "pong",
 		})
 	})
-
+	routes.AuthRoutes(r)
 	routes.UserRoutes(r)
 	routes.RecipeRoutes(r)
 	routes.CategoryRoutes(r)
