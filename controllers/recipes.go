@@ -82,18 +82,46 @@ func (ctrl RecipeController) AddRecipes(c *gin.Context) {
 	})
 }
 
+// GetRecipeDetails godoc
+// @Summary Get recipe details
+// @Schemes
+// @Description Get recipe details
+// @Tags recipes
+// @Accept json
+// @Produce json
+// @Success 200 {string} string "Get recipe details"
+// @Router /recipes/{id} [get]
 func (ctrl RecipeController) GetRecipeDetails(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Get recipe details",
 	})
 }
 
+// UpdateRecipe godoc
+// @Summary Update recipe
+// @Schemes
+// @Description Update recipe
+// @Tags recipes
+// @Accept json
+// @Produce json
+// @Param body body models.Recipe true "Recipe object that needs to be updated"
+// @Success 200 {string} string "Update recipe"
+// @Router /recipes/{id} [put]
 func (ctrl RecipeController) UpdateRecipe(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Update recipe",
 	})
 }
 
+// DeleteRecipe godoc
+// @Summary Delete recipe
+// @Schemes
+// @Description Delete recipe
+// @Tags recipes
+// @Accept json
+// @Produce json
+// @Success 200 {string} string "Delete recipe"
+// @Router /recipes/{id} [delete]
 func (ctrl RecipeController) DeleteRecipe(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Delete recipe",

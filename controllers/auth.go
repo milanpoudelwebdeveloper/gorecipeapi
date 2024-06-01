@@ -32,7 +32,7 @@ type AuthController struct{}
 // @Produce  json
 // @Param body body LoginRequest true "Login Request"
 // @Success 200 {string} string	"Login successful"
-// @Router /login [post]
+// @Router /auth/login [post]
 func (ctrl *AuthController) Login(c *gin.Context) {
 	var loginRequest LoginRequest
 
@@ -71,7 +71,7 @@ func (ctrl *AuthController) Login(c *gin.Context) {
 // @Produce  json
 // @Param body body RegisterRequest true "Register Request"
 // @Success 201 {string} string	"User created successfully"
-// @Router /register [post]
+// @Router /auth/register [post]
 func (ctrl AuthController) Register(c *gin.Context) {
 	var registerRequest RegisterRequest
 	if err := c.BindJSON(&registerRequest); err != nil {
@@ -98,30 +98,70 @@ func (ctrl AuthController) Register(c *gin.Context) {
 	})
 }
 
+// VerifyAccount godoc
+// @Summary Verify account
+// @Description Verify account
+// @Tags auth
+// @Accept  json
+// @Produce  json
+// @Success 200 {string} string	"Email verified"
+// @Router /auth/verify [put]
 func (ctrl AuthController) VerifyAccount(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": "Email verified",
 	})
 }
 
+// ForgotPassword godoc
+// @Summary Forgot password
+// @Description Forgot password
+// @Tags auth
+// @Accept  json
+// @Produce  json
+// @Success 200 {string} string	"Forgot password"
+// @Router /auth/forgot/password [post]
 func (ctrl AuthController) ForgotPassword(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": "Forgot password",
 	})
 }
 
+// ResetPassword godoc
+// @Summary Reset password
+// @Description Reset password
+// @Tags auth
+// @Accept  json
+// @Produce  json
+// @Success 200 {string} string	"Reset password"
+// @Router /auth/reset/password [put]
 func (ctrl AuthController) ResetPassword(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": "Reset password",
 	})
 }
 
+// ResendVerification godoc
+// @Summary Resend verification
+// @Description Resend verification
+// @Tags auth
+// @Accept  json
+// @Produce  json
+// @Success 200 {string} string	"Resend verification"
+// @Router /auth/resend/verification [get]
 func (ctrl AuthController) ResendVerification(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": "Resend verification",
 	})
 }
 
+// Logout godoc
+// @Summary Logout
+// @Description Logout
+// @Tags auth
+// @Accept  json
+// @Produce  json
+// @Success 200 {string} string	"Logout successful"
+// @Router /auth/logout [get]
 func (ctrl AuthController) Logout(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": "Logout successful",

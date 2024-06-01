@@ -1,5 +1,15 @@
 basePath: /
 definitions:
+  admin.NewUser:
+    properties:
+      email:
+        type: string
+      role:
+        type: string
+    required:
+    - email
+    - role
+    type: object
   controllers.LoginRequest:
     properties:
       email:
@@ -47,6 +57,12 @@ definitions:
         type: string
       title:
         type: string
+    required:
+    - country
+    - description
+    - id
+    - instructions
+    - title
     type: object
   models.User:
     properties:
@@ -66,6 +82,15 @@ definitions:
         type: string
       verified:
         type: boolean
+    required:
+    - country
+    - email
+    - id
+    - name
+    - password
+    - profile_image
+    - role
+    - verified
     type: object
 host: localhost:8080
 info:
@@ -76,22 +101,58 @@ info:
   title: Recipe API
   version: "1.0"
 paths:
-  /categories:
+  /admin/users:
     get:
       consumes:
       - application/json
-      description: get all categories
+      description: Get all users
       produces:
       - application/json
       responses:
         "200":
-          description: OK
+          description: List of users
           schema:
-            $ref: '#/definitions/models.Categories'
-      summary: get all categories
+            $ref: '#/definitions/models.User'
+      summary: Get all users
       tags:
-      - categories
-  /login:
+      - admin
+    post:
+      consumes:
+      - application/json
+      description: Create a new user
+      parameters:
+      - description: New User
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/admin.NewUser'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: New user created successfully
+          schema:
+            type: string
+      summary: Create a new user
+      tags:
+      - admin
+  /auth/forgot/password:
+    post:
+      consumes:
+      - application/json
+      description: Forgot password
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Forgot password
+          schema:
+            type: string
+      summary: Forgot password
+      tags:
+      - auth
+  /auth/login:
     post:
       consumes:
       - application/json
@@ -113,6 +174,103 @@ paths:
       summary: Login
       tags:
       - auth
+  /auth/logout:
+    get:
+      consumes:
+      - application/json
+      description: Logout
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Logout successful
+          schema:
+            type: string
+      summary: Logout
+      tags:
+      - auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register
+      parameters:
+      - description: Register Request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User created successfully
+          schema:
+            type: string
+      summary: Register
+      tags:
+      - auth
+  /auth/resend/verification:
+    get:
+      consumes:
+      - application/json
+      description: Resend verification
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Resend verification
+          schema:
+            type: string
+      summary: Resend verification
+      tags:
+      - auth
+  /auth/reset/password:
+    put:
+      consumes:
+      - application/json
+      description: Reset password
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Reset password
+          schema:
+            type: string
+      summary: Reset password
+      tags:
+      - auth
+  /auth/verify:
+    put:
+      consumes:
+      - application/json
+      description: Verify account
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Email verified
+          schema:
+            type: string
+      summary: Verify account
+      tags:
+      - auth
+  /categories:
+    get:
+      consumes:
+      - application/json
+      description: get all categories
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Categories'
+      summary: get all categories
+      tags:
+      - categories
   /recipes:
     get:
       consumes:
@@ -149,62 +307,84 @@ paths:
       summary: Post a recipe
       tags:
       - recipes
-  /register:
-    post:
+  /recipes/{id}:
+    delete:
       consumes:
       - application/json
-      description: Register
-      parameters:
-      - description: Register Request
-        in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/controllers.RegisterRequest'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: User created successfully
-          schema:
-            type: string
-      summary: Register
-      tags:
-      - auth
-  /users:
-    get:
-      consumes:
-      - application/json
-      description: get all users
+      description: Delete recipe
       produces:
       - application/json
       responses:
         "200":
-          description: OK
+          description: Delete recipe
           schema:
-            $ref: '#/definitions/models.User'
-      summary: get all users
+            type: string
+      summary: Delete recipe
       tags:
-      - users
-    post:
+      - recipes
+    get:
       consumes:
       - application/json
-      description: Post a user
-      parameters:
-      - description: User object that needs to be added
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/models.User'
+      description: Get recipe details
       produces:
       - application/json
       responses:
-        "201":
-          description: User added successfully
+        "200":
+          description: Get recipe details
           schema:
             type: string
-      summary: Post a user
+      summary: Get recipe details
       tags:
-      - users
+      - recipes
+    put:
+      consumes:
+      - application/json
+      description: Update recipe
+      parameters:
+      - description: Recipe object that needs to be updated
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.Recipe'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Update recipe
+          schema:
+            type: string
+      summary: Update recipe
+      tags:
+      - recipes
+  /user/change/password:
+    put:
+      consumes:
+      - application/json
+      description: Change password
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Password changed
+          schema:
+            type: string
+      summary: Change password
+      tags:
+      - user
+  /user/profile:
+    get:
+      consumes:
+      - application/json
+      description: Get user profile
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User profile
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: Get user profile
+      tags:
+      - user
 swagger: "2.0"

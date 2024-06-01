@@ -16,6 +16,14 @@ type NewUser struct {
 	Role  string `json:"role" binding:"required"`
 }
 
+// GetUsers godoc
+// @Summary Get all users
+// @Description Get all users
+// @Tags admin
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} models.User	"List of users"
+// @Router /admin/users [get]
 func (ctrl *AdminController) GetUsers(c *gin.Context) {
 	query := "SELECT name, email, role, verified, profileimage FROM users"
 	rows, err := db.DB.Query(query)
@@ -47,6 +55,15 @@ func (ctrl *AdminController) GetUsers(c *gin.Context) {
 
 }
 
+// CreateUser godoc
+// @Summary Create a new user
+// @Description Create a new user
+// @Tags admin
+// @Accept  json
+// @Produce  json
+// @Param body body NewUser true "New User"
+// @Success 201 {string} string	"New user created successfully"
+// @Router /admin/users [post]
 func (ctrl *AdminController) CreateUser(c *gin.Context) {
 	var newUser NewUser
 	if err := c.BindJSON(&newUser); err != nil {

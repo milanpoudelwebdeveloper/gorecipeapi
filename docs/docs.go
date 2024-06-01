@@ -18,9 +18,9 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/categories": {
+        "/admin/users": {
             "get": {
-                "description": "get all categories",
+                "description": "Get all users",
                 "consumes": [
                     "application/json"
                 ],
@@ -28,20 +28,75 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "categories"
+                    "admin"
                 ],
-                "summary": "get all categories",
+                "summary": "Get all users",
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "List of users",
                         "schema": {
-                            "$ref": "#/definitions/models.Categories"
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin"
+                ],
+                "summary": "Create a new user",
+                "parameters": [
+                    {
+                        "description": "New User",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/admin.NewUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "New user created successfully",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
             }
         },
-        "/login": {
+        "/auth/forgot/password": {
+            "post": {
+                "description": "Forgot password",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Forgot password",
+                "responses": {
+                    "200": {
+                        "description": "Forgot password",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/login": {
             "post": {
                 "description": "Login",
                 "consumes": [
@@ -70,6 +125,155 @@ const docTemplate = `{
                         "description": "Login successful",
                         "schema": {
                             "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/logout": {
+            "get": {
+                "description": "Logout",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Logout",
+                "responses": {
+                    "200": {
+                        "description": "Logout successful",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/register": {
+            "post": {
+                "description": "Register",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Register",
+                "parameters": [
+                    {
+                        "description": "Register Request",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.RegisterRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "User created successfully",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/resend/verification": {
+            "get": {
+                "description": "Resend verification",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Resend verification",
+                "responses": {
+                    "200": {
+                        "description": "Resend verification",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/reset/password": {
+            "put": {
+                "description": "Reset password",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Reset password",
+                "responses": {
+                    "200": {
+                        "description": "Reset password",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/verify": {
+            "put": {
+                "description": "Verify account",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Verify account",
+                "responses": {
+                    "200": {
+                        "description": "Email verified",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/categories": {
+            "get": {
+                "description": "get all categories",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "categories"
+                ],
+                "summary": "get all categories",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Categories"
                         }
                     }
                 }
@@ -130,9 +334,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/register": {
-            "post": {
-                "description": "Register",
+        "/recipes/{id}": {
+            "get": {
+                "description": "Get recipe details",
                 "consumes": [
                     "application/json"
                 ],
@@ -140,23 +344,65 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "auth"
+                    "recipes"
                 ],
-                "summary": "Register",
+                "summary": "Get recipe details",
+                "responses": {
+                    "200": {
+                        "description": "Get recipe details",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update recipe",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "recipes"
+                ],
+                "summary": "Update recipe",
                 "parameters": [
                     {
-                        "description": "Register Request",
+                        "description": "Recipe object that needs to be updated",
                         "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/controllers.RegisterRequest"
+                            "$ref": "#/definitions/models.Recipe"
                         }
                     }
                 ],
                 "responses": {
-                    "201": {
-                        "description": "User created successfully",
+                    "200": {
+                        "description": "Update recipe",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete recipe",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "recipes"
+                ],
+                "summary": "Delete recipe",
+                "responses": {
+                    "200": {
+                        "description": "Delete recipe",
                         "schema": {
                             "type": "string"
                         }
@@ -164,9 +410,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/users": {
-            "get": {
-                "description": "get all users",
+        "/user/change/password": {
+            "put": {
+                "description": "Change password",
                 "consumes": [
                     "application/json"
                 ],
@@ -174,20 +420,22 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "users"
+                    "user"
                 ],
-                "summary": "get all users",
+                "summary": "Change password",
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Password changed",
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "type": "string"
                         }
                     }
                 }
-            },
-            "post": {
-                "description": "Post a user",
+            }
+        },
+        "/user/profile": {
+            "get": {
+                "description": "Get user profile",
                 "consumes": [
                     "application/json"
                 ],
@@ -195,25 +443,14 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "users"
+                    "user"
                 ],
-                "summary": "Post a user",
-                "parameters": [
-                    {
-                        "description": "User object that needs to be added",
-                        "name": "user",
-                        "in": "body",
-                        "required": true,
+                "summary": "Get user profile",
+                "responses": {
+                    "200": {
+                        "description": "User profile",
                         "schema": {
                             "$ref": "#/definitions/models.User"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "User added successfully",
-                        "schema": {
-                            "type": "string"
                         }
                     }
                 }
@@ -221,6 +458,21 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "admin.NewUser": {
+            "type": "object",
+            "required": [
+                "email",
+                "role"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                }
+            }
+        },
         "controllers.LoginRequest": {
             "type": "object",
             "required": [
@@ -275,6 +527,13 @@ const docTemplate = `{
         },
         "models.Recipe": {
             "type": "object",
+            "required": [
+                "country",
+                "description",
+                "id",
+                "instructions",
+                "title"
+            ],
             "properties": {
                 "country": {
                     "type": "string"
@@ -295,6 +554,16 @@ const docTemplate = `{
         },
         "models.User": {
             "type": "object",
+            "required": [
+                "country",
+                "email",
+                "id",
+                "name",
+                "password",
+                "profile_image",
+                "role",
+                "verified"
+            ],
             "properties": {
                 "country": {
                     "type": "string"
