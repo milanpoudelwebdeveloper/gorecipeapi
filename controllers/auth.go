@@ -24,6 +24,15 @@ type RegisterRequest struct {
 
 type AuthController struct{}
 
+// Login godoc
+// @Summary Login
+// @Description Login
+// @Tags auth
+// @Accept  json
+// @Produce  json
+// @Param body body LoginRequest true "Login Request"
+// @Success 200 {string} string	"Login successful"
+// @Router /login [post]
 func (ctrl *AuthController) Login(c *gin.Context) {
 	var loginRequest LoginRequest
 
@@ -54,6 +63,15 @@ func (ctrl *AuthController) Login(c *gin.Context) {
 	c.JSON(200, gin.H{"message": "Login successful"})
 }
 
+// Register godoc
+// @Summary Register
+// @Description Register
+// @Tags auth
+// @Accept  json
+// @Produce  json
+// @Param body body RegisterRequest true "Register Request"
+// @Success 201 {string} string	"User created successfully"
+// @Router /register [post]
 func (ctrl AuthController) Register(c *gin.Context) {
 	var registerRequest RegisterRequest
 	if err := c.BindJSON(&registerRequest); err != nil {
@@ -77,5 +95,35 @@ func (ctrl AuthController) Register(c *gin.Context) {
 	}
 	c.JSON(http.StatusCreated, gin.H{
 		"message": "User created successfully",
+	})
+}
+
+func (ctrl AuthController) VerifyAccount(c *gin.Context) {
+	c.JSON(200, gin.H{
+		"message": "Email verified",
+	})
+}
+
+func (ctrl AuthController) ForgotPassword(c *gin.Context) {
+	c.JSON(200, gin.H{
+		"message": "Forgot password",
+	})
+}
+
+func (ctrl AuthController) ResetPassword(c *gin.Context) {
+	c.JSON(200, gin.H{
+		"message": "Reset password",
+	})
+}
+
+func (ctrl AuthController) ResendVerification(c *gin.Context) {
+	c.JSON(200, gin.H{
+		"message": "Resend verification",
+	})
+}
+
+func (ctrl AuthController) Logout(c *gin.Context) {
+	c.JSON(200, gin.H{
+		"message": "Logout successful",
 	})
 }

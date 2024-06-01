@@ -1,5 +1,31 @@
 basePath: /
 definitions:
+  controllers.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  controllers.RegisterRequest:
+    properties:
+      country:
+        type: string
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    required:
+    - country
+    - email
+    - name
+    - password
+    type: object
   models.Categories:
     properties:
       coverimage:
@@ -65,6 +91,28 @@ paths:
       summary: get all categories
       tags:
       - categories
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Login
+      parameters:
+      - description: Login Request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Login successful
+          schema:
+            type: string
+      summary: Login
+      tags:
+      - auth
   /recipes:
     get:
       consumes:
@@ -101,6 +149,28 @@ paths:
       summary: Post a recipe
       tags:
       - recipes
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Register
+      parameters:
+      - description: Register Request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User created successfully
+          schema:
+            type: string
+      summary: Register
+      tags:
+      - auth
   /users:
     get:
       consumes:

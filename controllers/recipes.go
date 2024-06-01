@@ -81,3 +81,21 @@ func (ctrl RecipeController) AddRecipes(c *gin.Context) {
 		"message": "Recipe added successfully",
 	})
 }
+
+func (ctrl RecipeController) GetRecipeDetails(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Get recipe details",
+	})
+}
+
+func (ctrl RecipeController) UpdateRecipe(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Update recipe",
+	})
+}
+
+func (ctrl RecipeController) DeleteRecipe(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Delete recipe",
+	})
+}

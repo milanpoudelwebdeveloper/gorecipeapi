@@ -10,7 +10,7 @@ func UserRoutes(router *gin.Engine) {
 	userController := controllers.UserController{}
 	userGroup := router.Group("/users")
 	{
-		userGroup.GET("/", userController.GetUsers)
-		userGroup.POST("/", userController.AddUser)
+		userGroup.PUT("/update", userController.UpdateProfile)
+		userGroup.PUT("/change/password", userController.ChangePassword)
 	}
 }

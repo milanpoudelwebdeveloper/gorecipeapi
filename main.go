@@ -4,6 +4,7 @@ import (
 	"recipeapi/db"
 	_ "recipeapi/docs"
 	"recipeapi/routes"
+	adminRoutes "recipeapi/routes/admin"
 
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
@@ -30,6 +31,7 @@ func main() {
 	routes.UserRoutes(r)
 	routes.RecipeRoutes(r)
 	routes.CategoryRoutes(r)
+	adminRoutes.UserRoutes(r)
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.Run()
 }

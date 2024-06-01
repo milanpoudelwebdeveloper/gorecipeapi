@@ -82,5 +82,4 @@ func (ctrl *CategoriesController) AddCategory(c *gin.Context) {
 		"message": "Category created successfully",
 		"data":    newCategory,
 	})
-
 }

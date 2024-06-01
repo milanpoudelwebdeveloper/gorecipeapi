@@ -1,9 +1,9 @@
 package models
 
 type Recipe struct {
-	ID           uint   `json:"id"`
-	Title        string `json:"title"`
-	Description  string `json:"description"`
-	Country      string `json:"country"`
-	Instructions string `json:"instructions"`
+	ID           uint   `json:"id" binding:"required"`
+	Title        string `json:"title" binding:"required"`
+	Description  string `json:"description" binding:"required"`
+	Country      string `json:"country" binding:"required"`
+	Instructions string `json:"instructions" binding:"required"`
 }
