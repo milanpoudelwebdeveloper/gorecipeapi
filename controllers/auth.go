@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"recipeapi/db"
 	"recipeapi/models"
+	"recipeapi/utils"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
@@ -78,6 +79,22 @@ func (ctrl AuthController) Register(c *gin.Context) {
 		c.JSON(400, gin.H{"message": "Couldn't parse register body", "error": err.Error()})
 		return
 	}
+	ifExistsQuery := "SELECT email FROM users WHERE email = $1"
+	var existingEmail string
+	err := db.DB.QueryRow(ifExistsQuery, registerRequest.Email).Scan(&existingEmail)
+	if err != nil && err != sql.ErrNoRows {
+		c.JSON(http.StatusConflict, gin.H{
+			"message": "Error while checking if user exists",
+		})
+		return
+	}
+	if existingEmail == registerRequest.Email {
+		c.JSON(http.StatusConflict, gin.H{
+			"message": "User with that email already exists",
+		})
+		return
+	}
+
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(registerRequest.Password), bcrypt.DefaultCost)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -107,9 +124,7 @@ func (ctrl AuthController) Register(c *gin.Context) {
 // @Success 200 {string} string	"Email verified"
 // @Router /auth/verify [put]
 func (ctrl AuthController) VerifyAccount(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "Email verified",
-	})
+
 }
 
 // ForgotPassword godoc
@@ -140,6 +155,10 @@ func (ctrl AuthController) ResetPassword(c *gin.Context) {
 	})
 }
 
+type Email struct {
+	Email string `json:"email" binding:"required"`
+}
+
 // ResendVerification godoc
 // @Summary Resend verification
 // @Description Resend verification
@@ -149,6 +168,18 @@ func (ctrl AuthController) ResetPassword(c *gin.Context) {
 // @Success 200 {string} string	"Resend verification"
 // @Router /auth/resend/verification [get]
 func (ctrl AuthController) ResendVerification(c *gin.Context) {
+	var email Email
+	if err := c.BindJSON(&email); err != nil {
+		c.JSON(400, gin.H{"message": "Couldn't parse email", "error": err.Error()})
+		return
+	}
+	err := utils.SendEmail(email.Email)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error while sending email",
+		})
+		return
+	}
 	c.JSON(200, gin.H{
 		"message": "Resend verification",
 	})
